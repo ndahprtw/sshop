@@ -66,7 +66,7 @@
           <li><a class="nav-link scrollto" href="/#testimonials">Testimonials</a></li>
           <li><a class="nav-link scrollto" href="/#contact">Contact</a></li>
           @if (empty(auth()->user()))
-              <li> <a class="btn-getstarted scrollto" href="/login">Get Started</a> </li>
+              <li> <a class="btn-getstarted scrollto" href="{{ route('sso.redirect') }}">Get Started</a> </li>
           @else
               <li class="dropdown">
                   <a class="btn-getstarted" href="#">
@@ -106,7 +106,7 @@
               <h2>{{ $carousel->title }}</h2>
               <p> {{ $carousel->deskripsi }} </p>
               @guest
-                <a href="/login" class="btn-get-started scrollto ">Get Started</a>
+                <a href="{{ route('sso.redirect') }}" class="btn-get-started scrollto ">Get Started</a>
               @endguest
             </div>
 
@@ -127,7 +127,7 @@
               <h2>{{ $item->title }}</h2>
               <p> {{ $item->deskripsi }} </p>
               @guest
-                <a href="/login" class="btn-get-started scrollto ">Get Started</a>
+                <a href="{{ route('sso.redirect') }}" class="btn-get-started scrollto ">Get Started</a>
               @endguest
             </div>
 

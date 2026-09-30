@@ -15,6 +15,7 @@ use App\Http\Controllers\RatingController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\SsoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// SSO login
+Route::get('/auth/sso/redirect', [SsoController::class, 'redirect'])->name('sso.redirect');
+Route::get('/auth/sso/callback', [SsoController::class, 'callback'])->name('sso.callback');
+Route::post('/auth/sso/logout', [SsoController::class, 'logout'])->name('sso.logout');
 
 // PENGUNJUNG -------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------ Landing Page
