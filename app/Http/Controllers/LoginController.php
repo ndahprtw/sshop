@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\SsoController;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,7 +39,12 @@ class LoginController extends Controller
             }
         }
     
-        public function logout() {
+        public function logout(Request $request) {
+            // Login lewat SSO: logout juga dari server SSO (sekaligus dari semua aplikasi lain).
+            if (Auth::check() && $request->session()->has('sso_access_token')) {
+                return app(SsoController::class)->logout($request);
+            }
+
             if (Auth::check()){
                 $role = Auth::user()->role;
     

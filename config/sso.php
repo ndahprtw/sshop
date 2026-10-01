@@ -1,12 +1,14 @@
 <?php
 
+// Pengaturan login SSO. Nilai sebenarnya diambil dari .env (SSO_*);
+// nilai kedua pada env() hanya cadangan bila variabel .env tidak ada.
+
 return [
+    'base_url' => rtrim(env('SSO_BASE_URL', 'https://sso.ndhprtw.my.id'), '/'),
+    'client_id' => env('SSO_CLIENT_ID'),
+    'client_secret' => env('SSO_CLIENT_SECRET'),
+    'redirect_uri' => env('SSO_REDIRECT_URI'),
 
-    // Izinkan pengguna mendaftar sendiri di halaman SSO.
-    'allow_registration' => env('SSO_ALLOW_REGISTRATION', true),
-
-    // Masa berlaku access token (menit) dan refresh token (hari).
-    'token_ttl' => env('SSO_TOKEN_TTL', 60),
-    'refresh_token_ttl_days' => env('SSO_REFRESH_TOKEN_TTL_DAYS', 30),
-
+    // Seberapa sering (detik) aplikasi memeriksa apakah sesi SSO masih berlaku.
+    'check_interval' => env('SSO_CHECK_INTERVAL', 60),
 ];

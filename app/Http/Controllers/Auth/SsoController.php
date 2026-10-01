@@ -72,11 +72,24 @@ class SsoController extends Controller
             ->throw()
             ->json();
 
-        // Sinkronkan pengguna lokal berdasarkan ID dari SSO.
-        $user = User::updateOrCreate(
-            ['sso_id' => $ssoUser['id']],
-            ['name' => $ssoUser['name'], 'email' => $ssoUser['email']],
-        );
+        // Cari pengguna lokal berdasarkan ID SSO; jika belum tertaut, cocokkan dengan email
+        // agar akun lama sshop tersambung, bukan terduplikasi.
+        $user = User::where('sso_id', $ssoUser['id'])->first()
+            ?? User::where('email', $ssoUser['email'])->first();
+
+        if (! $user) {
+            // Pengguna baru dari SSO: kolom role & password di sshop wajib diisi.
+            $user = new User([
+                'password' => Str::random(40),
+            ]);
+            $user->role = 'user';
+        }
+
+        $user->forceFill([
+            'sso_id' => $ssoUser['id'],
+            'name' => $ssoUser['name'],
+            'email' => $ssoUser['email'],
+        ])->save();
 
         Auth::login($user);
         $request->session()->regenerate();
@@ -86,7 +99,10 @@ class SsoController extends Controller
             'sso_checked_at' => now()->timestamp,
         ]);
 
-        return redirect()->intended('/');
+        // Samakan dengan LoginController: admin ke dashboard, user ke beranda.
+        return $user->role === 'admin'
+            ? redirect('/dashboard')
+            : redirect()->intended('/');
     }
 
     /**

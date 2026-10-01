@@ -75,6 +75,9 @@
                         <a href="/auth/google" class="btn btn-light border w-100 d-flex align-items-center justify-content-center">
                             <i class='bx bxl-google me-2'></i> Login dengan Google
                         </a>
+                        <a href="{{ route('sso.redirect') }}" class="btn btn-light border w-100 d-flex align-items-center justify-content-center mt-2">
+                            <i class='bx bx-shield-quarter me-2'></i> Login dengan SSO
+                        </a>
                   </div>
                 </form>
                 <div class="text-center">
